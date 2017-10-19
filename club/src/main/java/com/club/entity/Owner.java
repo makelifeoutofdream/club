@@ -1,14 +1,18 @@
 package com.club.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
-import javax.annotation.Generated;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document
+@Entity
+@Table(name="owner")
 public class Owner implements Serializable {
 
 	/**
@@ -17,17 +21,39 @@ public class Owner implements Serializable {
 	private static final long serialVersionUID = 639890014525730759L;
 
 	@Id
-	private String ownerId;
+	@GeneratedValue
+	private Long ownerId;
 	
 	private String ownerName;
 
-	private String role;
+	@OneToOne
+	private Role role;
+	
+	@OneToMany(mappedBy="owner")
+	private List<Club> clubs;
 
-	public String getOwnerId() {
+	
+	public List<Club> getClubs() {
+		return clubs;
+	}
+
+	public void setClubs(List<Club> clubs) {
+		this.clubs = clubs;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Long getOwnerId() {
 		return ownerId;
 	}
 
-	public void setOwnerId(String ownerId) {
+	public void setOwnerId(Long ownerId) {
 		this.ownerId = ownerId;
 	}
 
@@ -39,13 +65,6 @@ public class Owner implements Serializable {
 		this.ownerName = ownerName;
 	}
 
-	public String getRole() {
-		return role;
-	}
 
-	public void setRole(String role) {
-		this.role = role;
-	}
-	
 	
 }
